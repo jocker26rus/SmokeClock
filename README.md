@@ -45,9 +45,9 @@
 - контроллер Arduino Nano: http://ali.pub/28sn0v резерв: http://ali.pub/2351o1
 - экран LCD 2004 с модулем I2C: http://ali.pub/29hyvr
 - модуль реального времени DS1302: http://ali.pub/29hyw5
-- датчик дыма MQ-2:
-- датчик влажности DHT22: 
-- светодиодные модули WS2812
+- датчик дыма MQ-2: http://ali.pub/2fgf3k
+- датчик влажности DHT22: http://ali.pub/2fgf2l
+- светодиодные модули WS2812: http://ali.pub/2fgf27
 - кнопки 25шт: http://ali.pub/28sn4y резерв: http://ali.pub/235230
 - Фоторезистор: http://ali.pub/29hyxw
 - набор резисторов 600шт: http://ali.pub/28smng 
