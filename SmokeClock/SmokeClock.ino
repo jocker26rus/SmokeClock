@@ -9,7 +9,7 @@
 #include <SimpleDHT.h>
 #include "tones.h" // файл нот, лежит в папке прошивки
 //****************************
-#define vers "SmokeClock 1.1"
+#define vers "SmokeClock 1.2"
 // пины кнопок управления
 #define BTN_UP 10  // кнопка увеличения 
 #define BTN_DOWN 9  // кнопка уменьшения
@@ -35,6 +35,7 @@
 
 #define BTN_PROTECT 100         // защита дребезга кнопки 
 #define LCD_RENEW 250           // обновление экрана
+#define HEATING 60000           // прогрев датчика дыма 60сек
 //****************************
 LiquidCrystal_I2C lcd(0x3F,20,4);  // обычно китайские модули I2C для экрана имеют адрес 0x27 или 0x3F
 CRGB leds[NUM_LEDS];
@@ -214,7 +215,7 @@ void setup()
   for (int i=0; i<8; i++) lcd.createChar(i+1, custom[i]);
 
   writeBigString("GAS", 0, 0);
-  writeBigString("1.1", 0, 2);
+  writeBigString("1.2", 0, 2);
   lcd.setCursor(10,2);
   lcd.print("SmokeClock");
   lcd.setCursor(13,3);
@@ -407,7 +408,7 @@ void loop()
     note = !note; 
     horn_millis = now_millis;
    }
-   if ((horn_smoke)and(now_millis - horn_millis > 250)) { // сигнализация дыма
+   if ((horn_smoke)and(now_millis - horn_millis > 250)and(now_millis > HEATING)) { // сигнализация дыма
     if (note) {
       noTone(BUZZER_PIN);
       tone(BUZZER_PIN, NOTE_D8, 250); 
@@ -456,7 +457,9 @@ void print_lcd(void) { // отрисовка экрана
  snprintf(date_str, sizeof(date_str), "%04d-%02d-%02d %s", now_year, now_month, now_date, week_day[now_week_day].c_str() );
  snprintf(temp_str, sizeof(temp_str), "%02d", now_temp);
  
- if (set_time == 0) {snprintf(mq_str, sizeof(mq_str), "%04d", mq2);} else {snprintf(mq_str, sizeof(mq_str), "%04d", mq2_alarm);}
+ if (now_millis < HEATING) {snprintf(mq_str, sizeof(mq_str), "HEAT");}
+ else if (set_time == 0) {snprintf(mq_str, sizeof(mq_str), "%04d", mq2);} 
+ else {snprintf(mq_str, sizeof(mq_str), "%04d", mq2_alarm);}
  
  dtostrf((float)now_temp, 2, 0, temp_str);
  dtostrf((float)now_hum, 2, 0, hum_str);
